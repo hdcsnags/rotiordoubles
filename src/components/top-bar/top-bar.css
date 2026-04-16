@@ -1,0 +1,90 @@
+:root {
+  /* Intentionally uses design tokens only; fallbacks are token-based CSS variables. */
+}
+
+.top-bar {
+  width: 100%;
+  height: var(--top-bar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-inline: var(--space-lg);
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border);
+  box-sizing: border-box;
+}
+
+.hold-btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-height-md);
+  padding-inline: var(--space-md);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-elevated);
+  color: var(--color-text-primary);
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--easing-standard),
+    border-color var(--duration-fast) var(--easing-standard),
+    color var(--duration-fast) var(--easing-standard),
+    box-shadow var(--duration-fast) var(--easing-standard);
+}
+
+.hold-btn:hover {
+  background: var(--color-surface-hover);
+}
+
+.hold-btn:active {
+  background: var(--color-surface-active);
+}
+
+.hold-btn:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+.hold-btn--active {
+  background: var(--color-accent-surface);
+  border-color: var(--color-accent-border);
+  color: var(--color-accent-text);
+}
+
+.hold-btn--active:hover {
+  background: var(--color-accent-surface-hover);
+}
+
+.hold-btn--active:active {
+  background: var(--color-accent-surface-active);
+}
+
+.hold-btn--active:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+.approval-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height-sm);
+  padding-inline: var(--space-sm);
+  border-radius: var(--radius-pill);
+  background: var(--color-success-surface);
+  color: var(--color-success-text);
+  border: 1px solid var(--color-success-border);
+  font: var(--font-label);
+  white-space: nowrap;
+}
+
+.approval-badge:focus-visible {
+  outline: 3px solid var(--color-focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
