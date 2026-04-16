@@ -1,0 +1,41 @@
+@import url('../../styles/design-tokens.css');
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-pill, 9999px);
+  font: var(--font-label, inherit);
+  line-height: 1;
+  color: var(--color-surface, #fff);
+  background: var(--color-status-neutral, #6b7280);
+}
+
+.status-badge[data-status='live'] {
+  background: var(--color-status-live);
+}
+
+.status-badge[data-status='pending'] {
+  background: var(--color-status-pending);
+}
+
+.status-badge[data-status='failed'] {
+  background: var(--color-status-failed);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
