@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Approval Gate</title>
+  <link rel="stylesheet" href="../../styles/center-stage.css">
+  <script type="module">
+    import approvalGate from '../../lib/approval-gate.js';
+    import holdToggle from '../../lib/hold-toggle.js';
+
+    const gate = document.currentScript?.closest('approval-gate') || document.querySelector('approval-gate');
+
+    function isHoldEngaged() {
+      try {
+        if (typeof holdToggle?.isEngaged === 'function') return !!holdToggle.isEngaged();
+        if (typeof holdToggle?.engaged === 'boolean') return holdToggle.engaged;
+        if (typeof holdToggle?.getState === 'function') {
+          const state = holdToggle.getState();
+          return !!(state && (state.engaged || state.hold));
+        }
+      } catch (_) {
+        return false;
+      }
+      return false;
+    }
+
+    function updateDisabledState() {
+      const hold = isHoldEngaged();
+      gate?.querySelectorAll('[data-approval-action]').forEach((btn) => {
+        btn.disabled = hold;
+        btn.setAttribute('aria-disabled', hold ? 'true' : 'false');
+      });
+    }
+
+    function resolveGate(gateId, action) {
+      if (!gateId) return;
+      if (typeof approvalGate?.resolve === 'function') {
+        approvalGate.resolve(gateId, action);
+      }
+    }
+
+    function onClick(event) {
+      const button = event.target.closest('[data-approval-action]');
+      if (!button || button.disabled) return;
+      const gateId = gate?.getAttribute('data-gate-id') || gate?.dataset?.gateId || '';
+      const action = button.getAttribute('data-approval-action');
+      resolveGate(gateId, action);
+    }
+
+    gate?.addEventListener('click', onClick);
+    updateDisabledState();
+
+    try {
+      if (typeof holdToggle?.subscribe === 'function') {
+        holdToggle.subscribe(updateDisabledState);
+      } else if (typeof holdToggle?.onChange === 'function') {
+        holdToggle.onChange(updateDisabledState);
+      }
+    } catch (_) {}
+
+    try {
+      const observer = new MutationObserver(updateDisabledState);
+      observer.observe(gate, { attributes: true, attributeFilter: ['data-gate-id'] });
+    } catch (_) {}
+  </script>
+</head>
+<body>
+  <approval-gate class="center-stage approval-gate" data-gate-id="" role="group" aria-label="Approval gate">
+    <div class="approval-gate__content">
+      <div class="approval-gate__message" data-approval-message></div>
+      <div class="approval-gate__actions">
+        <button type="button" class="approval-gate__button approval-gate__button--approve" data-approval-action="approve">Approve</button>
+        <button type="button" class="approval-gate__button approval-gate__button--reject" data-approval-action="reject">Reject</button>
+      </div>
+    </div>
+  </approval-gate>
+</body>
+</html>
