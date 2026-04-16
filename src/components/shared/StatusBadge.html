@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Status Badge</title>
+  <link rel="stylesheet" href="shared.css">
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      font: inherit;
+      font-size: 0.875rem;
+      line-height: 1;
+      font-weight: 600;
+      user-select: none;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .status-badge::before {
+      content: '';
+      width: 0.55rem;
+      height: 0.55rem;
+      border-radius: 999px;
+      flex: 0 0 auto;
+      background: currentColor;
+      opacity: 0.9;
+    }
+
+    .status-badge[data-status="live"] {
+      color: #0f7a3a;
+      background: rgba(15, 122, 58, 0.12);
+      border-color: rgba(15, 122, 58, 0.24);
+    }
+
+    .status-badge[data-status="pending"] {
+      color: #8a5a00;
+      background: rgba(138, 90, 0, 0.12);
+      border-color: rgba(138, 90, 0, 0.24);
+    }
+
+    .status-badge[data-status="failed"] {
+      color: #b42318;
+      background: rgba(180, 35, 24, 0.12);
+      border-color: rgba(180, 35, 24, 0.24);
+    }
+  </style>
+</head>
+<body>
+  <template id="status-badge-template">
+    <span class="status-badge" role="status" aria-live="polite" data-status="pending">Pending</span>
+  </template>
+
+  <script>
+    (function () {
+      const LABELS = {
+        live: 'Live',
+        pending: 'Pending',
+        failed: 'Failed'
+      };
+
+      function normalizeStatus(status) {
+        const value = String(status || 'pending').trim().toLowerCase();
+        return Object.prototype.hasOwnProperty.call(LABELS, value) ? value : 'pending';
+      }
+
+      function renderStatusBadge(el, status) {
+        if (!el) return el;
+
+        const normalized = normalizeStatus(status);
+        el.setAttribute('data-status', normalized);
+        el.setAttribute('aria-label', LABELS[normalized] + ' status');
+        el.textContent = LABELS[normalized];
+        return el;
+      }
+
+      window.renderStatusBadge = renderStatusBadge;
+    })();
+  </script>
+</body>
+</html>
