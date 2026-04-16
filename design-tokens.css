@@ -1,0 +1,73 @@
+:root {
+  /* Color palette */
+  --color-bg: #0b1020;
+  --color-bg-elevated: #11182e;
+  --color-surface: #151d35;
+  --color-surface-2: #1b2644;
+  --color-surface-3: #223053;
+  --color-border: #2f3d66;
+  --color-border-strong: #40507f;
+  --color-text: #e9eeff;
+  --color-text-muted: #aeb8da;
+  --color-text-subtle: #7f8ab3;
+  --color-accent: #7c8cff;
+  --color-accent-hover: #93a0ff;
+  --color-accent-pressed: #6574f8;
+  --color-accent-soft: rgba(124, 140, 255, 0.16);
+  --color-status-success: #38d39f;
+  --color-status-warning: #ffcc66;
+  --color-status-danger: #ff6b7a;
+  --color-status-info: #58b7ff;
+  --color-approval: #8be28b;
+  --color-approval-soft: rgba(139, 226, 139, 0.16);
+  --color-shadow: rgba(0, 0, 0, 0.28);
+
+  /* Spacing scale */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* Typography */
+  --font-ui: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, 'Liberation Mono', monospace;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --line-height-tight: 1.2;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.7;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Layout dimensions */
+  --top-bar-height: 3.5rem;
+  --rail-width-full: 16rem;
+  --rail-width-icon: 4.5rem;
+  --drawer-width: 22rem;
+  --content-max-width: 80rem;
+  --panel-radius: 0.875rem;
+  --control-radius: 0.625rem;
+  --chip-radius: 9999px;
+  --border-width: 1px;
+
+  /* Motion */
+  --transition-fast: 120ms;
+  --transition-medium: 180ms;
+  --transition-slow: 240ms;
+  --transition-ease: cubic-bezier(0.2, 0, 0, 1);
+  --transition-standard: var(--transition-medium) var(--transition-ease);
+  --transition-emphasized: var(--transition-slow) var(--transition-ease);
+}
