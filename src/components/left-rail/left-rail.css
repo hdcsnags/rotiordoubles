@@ -1,0 +1,42 @@
+@import '../../styles/design-tokens.css';
+
+.left-rail {
+  display: grid;
+  grid-template-columns: var(--rail-width-full);
+  width: var(--rail-width-full);
+  transition: width var(--transition-base);
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border-subtle);
+}
+
+.agent-row {
+  display: grid;
+  grid-template-columns: var(--space-12) 1fr;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+}
+
+.agent-avatar {
+  inline-size: var(--space-12);
+  block-size: var(--space-12);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-muted);
+}
+
+.agent-name {
+  color: var(--color-text-primary);
+  font: var(--font-body-medium);
+}
+
+.agent-role {
+  color: var(--color-text-secondary);
+  font: var(--font-body-small);
+}
+
+@media (min-width: 960px) and (max-width: 1279px) {
+  .left-rail {
+    grid-template-columns: var(--rail-width-icon);
+    width: var(--rail-width-icon);
+  }
+}

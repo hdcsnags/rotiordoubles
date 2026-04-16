@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Output Block</title>
+  <link rel="stylesheet" href="../../styles/design-tokens.css" />
+  <link rel="stylesheet" href="./center-stage.css" />
+</head>
+<body>
+  <template id="output-block-template">
+    <article class="output-block" data-agent="">
+      <header class="output-block__header">
+        <div class="output-block__meta">
+          <span class="output-block__agent" data-role="agent-name"></span>
+          <span class="output-block__timestamp" data-role="timestamp"></span>
+        </div>
+        <div class="output-block__status" data-role="status"></div>
+      </header>
+      <div class="output-block__content" data-role="content"></div>
+    </article>
+  </template>
+
+  <script type="module">
+    import "../shared/StatusBadge.html";
+
+    const template = document.getElementById('output-block-template');
+
+    function formatTimestamp(timestamp) {
+      if (timestamp == null || timestamp === '') return '';
+      const date = timestamp instanceof Date ? timestamp : new Date(timestamp);
+      if (Number.isNaN(date.getTime())) return String(timestamp);
+      return date.toLocaleString();
+    }
+
+    function createStatusBadge(statusText = 'output') {
+      const badge = document.createElement('span');
+      badge.className = 'status-badge status-badge--inline';
+      badge.setAttribute('role', 'status');
+      badge.textContent = statusText;
+      return badge;
+    }
+
+    export function renderOutputBlock({ agentName, content, timestamp } = {}) {
+      if (!agentName) {
+        throw new Error('renderOutputBlock requires a non-empty agentName for the data-agent attribute.');
+      }
+
+      if (!template) {
+        throw new Error('Output block template is not available.');
+      }
+
+      const fragment = template.content.cloneNode(true);
+      const block = fragment.querySelector('.output-block');
+      if (!block) {
+        throw new Error('Output block root element is missing.');
+      }
+
+      block.setAttribute('data-agent', String(agentName));
+
+      const agentNode = fragment.querySelector('[data-role="agent-name"]');
+      const timestampNode = fragment.querySelector('[data-role="timestamp"]');
+      const contentNode = fragment.querySelector('[data-role="content"]');
+      const statusNode = fragment.querySelector('[data-role="status"]');
+
+      if (agentNode) agentNode.textContent = String(agentName);
+      if (timestampNode) timestampNode.textContent = formatTimestamp(timestamp);
+      if (contentNode) contentNode.textContent = content == null ? '' : String(content);
+      if (statusNode) statusNode.appendChild(createStatusBadge('output'));
+
+      return fragment;
+    }
+
+    window.renderOutputBlock = renderOutputBlock;
+  </script>
+</body>
+</html>

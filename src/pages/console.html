@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Maestro Console</title>
+    <link rel="stylesheet" href="/src/styles/console.css" />
+  </head>
+  <body>
+    <div class="console-shell">
+      <header class="console-topbar">
+        <div id="topbar-root"></div>
+      </header>
+
+      <main class="console-grid" aria-label="Operator console">
+        <aside class="console-column console-left" aria-label="Agent roster">
+          <div id="agent-roster-root"></div>
+        </aside>
+
+        <section class="console-column console-center" aria-label="Output feed">
+          <div id="output-feed-root"></div>
+        </section>
+
+        <aside class="console-column console-right" aria-label="Approval and context">
+          <div id="approval-gate-root"></div>
+          <div id="context-panel-root"></div>
+        </aside>
+      </main>
+    </div>
+
+    <script type="module">
+      import { initState } from '/src/scripts/state.js';
+      import { initHoldToggle } from '/src/scripts/hold-toggle.js';
+      import { initApprovalGate } from '/src/scripts/approval-gate.js';
+      import { initArtifactRouter } from '/src/scripts/artifact-router.js';
+
+      window.AGENTS = [
+        {
+          id: 'operator',
+          name: 'Operator',
+          role: 'Session lead',
+          status: 'active'
+        },
+        {
+          id: 'planner',
+          name: 'Planner',
+          role: 'Task decomposition',
+          status: 'idle'
+        },
+        {
+          id: 'reviewer',
+          name: 'Reviewer',
+          role: 'Quality control',
+          status: 'standby'
+        },
+        {
+          id: 'scribe',
+          name: 'Scribe',
+          role: 'Notes and artifacts',
+          status: 'active'
+        }
+      ];
+
+      initState();
+      initHoldToggle();
+      initApprovalGate();
+      initArtifactRouter();
+    </script>
+  </body>
+</html>

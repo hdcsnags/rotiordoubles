@@ -1,0 +1,153 @@
+@import url("../../design-tokens.css");
+
+:root {
+  --center-stage-background: var(--color-surface);
+  --center-stage-foreground: var(--color-text-primary);
+  --center-stage-muted: var(--color-text-secondary);
+  --center-stage-border: var(--color-border);
+  --center-stage-border-subtle: var(--color-border-subtle);
+  --center-stage-shadow: var(--shadow-md);
+  --center-stage-scrollbar-track: var(--color-surface-muted);
+  --center-stage-scrollbar-thumb: var(--color-border-strong);
+  --output-block-background: var(--color-surface-elevated);
+  --output-block-foreground: var(--color-text-primary);
+  --output-block-border: var(--color-border);
+  --output-block-provenance-foreground: var(--color-text-secondary);
+  --approval-gate-background: color-mix(in srgb, var(--color-accent-approval) 10%, var(--color-surface));
+  --approval-gate-foreground: var(--color-text-primary);
+  --approval-gate-border: color-mix(in srgb, var(--color-accent-approval) 58%, var(--color-border));
+  --approval-gate-border-strong: var(--color-accent-approval);
+  --approval-gate-shadow: 0 0 0 1px color-mix(in srgb, var(--color-accent-approval) 18%, transparent), var(--shadow-sm);
+  --approval-gate-button-background: var(--color-surface-elevated);
+  --approval-gate-button-background-hover: color-mix(in srgb, var(--color-accent-approval) 12%, var(--color-surface-elevated));
+  --approval-gate-button-foreground: var(--color-text-primary);
+  --approval-gate-button-border: var(--color-border);
+  --approval-gate-button-border-hover: var(--approval-gate-border-strong);
+  --approval-gate-button-primary-background: var(--color-accent-approval);
+  --approval-gate-button-primary-foreground: var(--color-on-accent);
+  --approval-gate-button-primary-background-hover: color-mix(in srgb, var(--color-accent-approval) 88%, var(--color-text-primary));
+  --approval-gate-button-danger-background: var(--color-surface-elevated);
+  --approval-gate-button-danger-foreground: var(--color-text-danger);
+  --approval-gate-button-danger-border: color-mix(in srgb, var(--color-text-danger) 28%, var(--color-border));
+}
+
+.center-stage {
+  color: var(--center-stage-foreground);
+  background: var(--center-stage-background);
+  border: 1px solid var(--center-stage-border);
+  box-shadow: var(--center-stage-shadow);
+}
+
+.center-stage__feed {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--center-stage-scrollbar-thumb) var(--center-stage-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+.center-stage__feed::-webkit-scrollbar {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.center-stage__feed::-webkit-scrollbar-track {
+  background: var(--center-stage-scrollbar-track);
+}
+
+.center-stage__feed::-webkit-scrollbar-thumb {
+  background: var(--center-stage-scrollbar-thumb);
+  border: 0.2rem solid var(--center-stage-scrollbar-track);
+  border-radius: var(--radius-full);
+}
+
+.output-block {
+  color: var(--output-block-foreground);
+  background: var(--output-block-background);
+  border: 1px solid var(--output-block-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.output-block__provenance {
+  color: var(--output-block-provenance-foreground);
+}
+
+.approval-gate {
+  color: var(--approval-gate-foreground);
+  background: var(--approval-gate-background);
+  border: 1px solid var(--approval-gate-border);
+  border-left: 0.25rem solid var(--approval-gate-border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--approval-gate-shadow);
+}
+
+.approval-gate__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.approval-gate__actions button,
+.approval-gate__actions .button {
+  appearance: none;
+  color: var(--approval-gate-button-foreground);
+  background: var(--approval-gate-button-background);
+  border: 1px solid var(--approval-gate-button-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font: inherit;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+}
+
+.approval-gate__actions button:hover,
+.approval-gate__actions .button:hover {
+  background: var(--approval-gate-button-background-hover);
+  border-color: var(--approval-gate-button-border-hover);
+}
+
+.approval-gate__actions button:focus-visible,
+.approval-gate__actions .button:focus-visible {
+  outline: 0.125rem solid var(--approval-gate-border-strong);
+  outline-offset: 0.125rem;
+}
+
+.approval-gate__actions button:active,
+.approval-gate__actions .button:active {
+  transform: translateY(0.0625rem);
+}
+
+.approval-gate__actions button[disabled],
+.approval-gate__actions .button[disabled] {
+  cursor: not-allowed;
+  opacity: 0.56;
+  transform: none;
+}
+
+.approval-gate__actions .button--primary,
+.approval-gate__actions button.button--primary {
+  color: var(--approval-gate-button-primary-foreground);
+  background: var(--approval-gate-button-primary-background);
+  border-color: var(--approval-gate-button-primary-background);
+}
+
+.approval-gate__actions .button--primary:hover,
+.approval-gate__actions button.button--primary:hover {
+  background: var(--approval-gate-button-primary-background-hover);
+  border-color: var(--approval-gate-button-primary-background-hover);
+}
+
+.approval-gate__actions .button--danger,
+.approval-gate__actions button.button--danger {
+  color: var(--approval-gate-button-danger-foreground);
+  background: var(--approval-gate-button-danger-background);
+  border-color: var(--approval-gate-button-danger-border);
+}
+
+.approval-gate__actions .button--danger:hover,
+.approval-gate__actions button.button--danger:hover {
+  background: color-mix(in srgb, var(--color-text-danger) 8%, var(--approval-gate-button-danger-background));
+  border-color: color-mix(in srgb, var(--color-text-danger) 42%, var(--approval-gate-button-danger-border));
+}

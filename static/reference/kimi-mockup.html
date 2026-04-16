@@ -1,0 +1,714 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kimi K2 — Session 87 Reference Mockup</title>
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #111722;
+      --panel-2: #0f141d;
+      --panel-3: #151c28;
+      --line: #243041;
+      --line-soft: rgba(255,255,255,0.08);
+      --text: #e7edf7;
+      --muted: #8fa0b6;
+      --subtle: #6d7c90;
+      --accent: #6aa9ff;
+      --accent-2: #7ce0c3;
+      --warn: #f4c96b;
+      --danger: #f07f7f;
+      --success: #77d39a;
+      --chip: #1a2331;
+      --shadow: 0 18px 40px rgba(0,0,0,0.35);
+      --radius: 16px;
+      --radius-sm: 12px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(1200px 900px at 15% 0%, rgba(106,169,255,0.09), transparent 52%),
+        radial-gradient(1000px 700px at 85% 8%, rgba(124,224,195,0.08), transparent 40%),
+        linear-gradient(180deg, #091018 0%, #0a0f14 100%);
+      color: var(--text);
+      font-family: var(--sans);
+      overflow: hidden;
+    }
+
+    .frame {
+      height: 100vh;
+      display: grid;
+      grid-template-rows: 64px 1fr;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px 0 20px;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(10,15,20,0.86);
+      backdrop-filter: blur(12px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, rgba(106,169,255,0.95), rgba(124,224,195,0.85));
+      box-shadow: 0 10px 30px rgba(106,169,255,0.25);
+      flex: none;
+    }
+
+    .brand-text { min-width: 0; }
+    .brand-title {
+      font-size: 14px;
+      font-weight: 650;
+      letter-spacing: 0.2px;
+      line-height: 1.1;
+    }
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.1;
+    }
+
+    .top-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--success);
+      box-shadow: 0 0 0 4px rgba(119,211,154,0.12);
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr) 340px;
+      min-height: 0;
+    }
+
+    .sidebar, .main, .drawer {
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: linear-gradient(180deg, rgba(17,23,34,0.94), rgba(12,16,23,0.96));
+      border-right: 1px solid var(--line-soft);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .panel {
+      background: rgba(17,23,34,0.82);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .section-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--subtle);
+      margin: 0 0 10px;
+    }
+
+    .mission {
+      padding: 14px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(21,28,40,0.96), rgba(16,22,32,0.96));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .mission h1 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      line-height: 1.3;
+    }
+
+    .mission p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .roster {
+      padding: 14px;
+    }
+
+    .agent {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding: 12px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .agent:first-of-type { border-top: none; padding-top: 0; }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(106,169,255,0.25), rgba(124,224,195,0.14));
+      border: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .agent-name {
+      font-size: 13px;
+      font-weight: 650;
+      margin: 0;
+    }
+
+    .agent-role, .agent-note {
+      margin: 3px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 2px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: var(--chip);
+      color: var(--text);
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .chip .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .main {
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 14px;
+      padding: 16px;
+      background:
+        linear-gradient(180deg, rgba(11,15,20,0.15), rgba(11,15,20,0.45)),
+        radial-gradient(900px 600px at 50% -5%, rgba(106,169,255,0.06), transparent 48%);
+    }
+
+    .stage-header {
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(21,28,40,0.95), rgba(15,20,29,0.92));
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .stage-header h2 {
+      margin: 0 0 6px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .stage-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 78ch;
+    }
+
+    .header-right {
+      text-align: right;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      flex: none;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      padding: 14px;
+      border-radius: var(--radius);
+      background: rgba(17,23,34,0.74);
+      border: 1px solid rgba(255,255,255,0.06);
+      min-height: 88px;
+    }
+
+    .metric .label {
+      font-size: 11px;
+      color: var(--subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 10px;
+    }
+
+    .metric .value {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .metric .note {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .feed {
+      min-height: 0;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .block {
+      margin-bottom: 12px;
+      padding: 14px 15px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(18,24,35,0.96), rgba(13,18,26,0.96));
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .block-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 650;
+      font-size: 13px;
+    }
+
+    .kbd {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px;
+      padding: 3px 6px;
+    }
+
+    .block-body {
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .block-body p { margin: 0 0 10px; }
+    .block-body p:last-child { margin-bottom: 0; }
+
+    .codebox {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.6;
+      color: #d9e7f8;
+      padding: 12px 13px;
+      border-radius: 12px;
+      background: rgba(4,8,12,0.7);
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      white-space: pre-wrap;
+    }
+
+    .approval {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 18px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(17,23,34,0.92), rgba(13,18,26,0.96));
+      border: 1px solid rgba(124,224,195,0.22);
+    }
+
+    .approval strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .approval span { color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+    .approve-btn {
+      flex: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(106,169,255,0.96), rgba(124,224,195,0.92));
+      color: #08111b;
+      font-weight: 750;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      border: none;
+      box-shadow: 0 10px 30px rgba(106,169,255,0.16);
+    }
+
+    .drawer {
+      background: linear-gradient(180deg, rgba(17,23,34,0.94), rgba(12,16,23,0.96));
+      border-left: 1px solid var(--line-soft);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .drawer-card {
+      padding: 14px;
+      border-radius: var(--radius);
+      background: rgba(21,28,40,0.88);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .drawer-card h3 {
+      margin: 0 0 10px;
+      font-size: 13px;
+    }
+
+    .drawer-list {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .drawer-list li {
+      padding: 10px 11px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .drawer-list strong { color: var(--text); font-weight: 600; }
+
+    .drawer-meta {
+      display: grid;
+      gap: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .drawer-stat {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 0;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .drawer-stat:first-child { border-top: none; padding-top: 0; }
+    .drawer-stat .name { color: var(--muted); }
+    .drawer-stat .num { color: var(--text); font-family: var(--mono); }
+
+    .footer {
+      margin-top: auto;
+      color: var(--subtle);
+      font-size: 11px;
+      line-height: 1.5;
+      padding-top: 2px;
+    }
+
+    @media (max-width: 1180px) {
+      body { overflow: auto; }
+      .frame { height: auto; min-height: 100vh; }
+      .workspace { grid-template-columns: 260px minmax(0, 1fr); }
+      .drawer { display: none; }
+    }
+
+    @media (max-width: 880px) {
+      .workspace { grid-template-columns: 1fr; }
+      .sidebar { border-right: none; border-bottom: 1px solid var(--line-soft); }
+      .timeline { grid-template-columns: 1fr 1fr; }
+      .main { padding-top: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <header class="topbar" aria-label="Session header">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand-text">
+          <div class="brand-title">Kimi K2 — Session 87</div>
+          <div class="brand-subtitle">Reference baseline mockup · static console layout</div>
+        </div>
+      </div>
+      <div class="top-meta">
+        <div class="pill"><span class="status-dot" aria-hidden="true"></span> Read-only reference</div>
+        <div class="pill">No JS dependencies</div>
+        <div class="pill">Design review artifact</div>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <aside class="sidebar" aria-label="Agent roster and mission">
+        <section class="mission">
+          <h1>Mission: compare console composition against the Kimi K2 mockup</h1>
+          <p>
+            This page preserves the three-column structure, representative agents, output blocks,
+            approval gate, and right-side drawer for visual alignment during implementation review.
+          </p>
+        </section>
+
+        <section class="panel roster" aria-label="Agent roster">
+          <div class="section-title">Agent roster</div>
+
+          <div class="agent">
+            <div class="avatar" aria-hidden="true">A1</div>
+            <div>
+              <p class="agent-name">Atlas</p>
+              <p class="agent-role">Coordinator · prioritizes work, routes blockers, and maintains task state.</p>
+              <p class="agent-note">Focuses on system order, dependency hygiene, and checkpoint summaries.</p>
+            </div>
+          </div>
+
+          <div class="agent">
+            <div class="avatar" aria-hidden="true">D7</div>
+            <div>
+              <p class="agent-name">Delta</p>
+              <p class="agent-role">Reviewer · validates implementation fidelity and visual parity.</p>
+              <p class="agent-note">Calls out discrepancies in spacing, contrast, and component behavior.</p>
+            </div>
+          </div>
+
+          <div class="agent">
+            <div class="avatar" aria-hidden="true">S3</div>
+            <div>
+              <p class="agent-name">Sigma</p>
+              <p class="agent-role">Analyst · derives baseline notes from the reference and spec.</p>
+              <p class="agent-note">Captures key structure, constraints, and final approval criteria.</p>
+            </div>
+          </div>
+
+          <div class="chips" aria-label="Capabilities">
+            <span class="chip"><span class="dot"></span> Visual QA</span>
+            <span class="chip"><span class="dot"></span> Layout lock</span>
+            <span class="chip"><span class="dot"></span> Read-only</span>
+            <span class="chip"><span class="dot"></span> Baseline</span>
+          </div>
+        </section>
+
+        <section class="panel roster" aria-label="Checklist">
+          <div class="section-title">Reference constraints</div>
+          <div class="drawer-meta">
+            <div class="drawer-stat"><span class="name">Self-contained</span><span class="num">YES</span></div>
+            <div class="drawer-stat"><span class="name">Inline styles</span><span class="num">YES</span></div>
+            <div class="drawer-stat"><span class="name">No scripts</span><span class="num">YES</span></div>
+            <div class="drawer-stat"><span class="name">Editable baseline</span><span class="num">NO</span></div>
+          </div>
+        </section>
+
+        <div class="footer">
+          Any deviations from this baseline must be documented in <span style="font-family:var(--mono);">docs/design-spec.md</span>.
+        </div>
+      </aside>
+
+      <main class="main" aria-label="Primary console">
+        <section class="stage-header">
+          <div>
+            <h2>Three-column console reference</h2>
+            <p>
+              Representative layout for a design-review console: agent roster on the left, execution/output feed in the center,
+              and a contextual detail drawer on the right. The arrangement is intentionally dense, dark, and dashboard-like.
+            </p>
+          </div>
+          <div class="header-right">
+            Session 87<br />
+            Status: comparison-ready<br />
+            Mode: static reference
+          </div>
+        </section>
+
+        <section class="timeline" aria-label="Session metrics">
+          <div class="metric">
+            <div class="label">Workspace width</div>
+            <div class="value">3 panes</div>
+            <div class="note">Rigid layout with fixed side columns and a fluid center.</div>
+          </div>
+          <div class="metric">
+            <div class="label">Primary focus</div>
+            <div class="value">Alignment</div>
+            <div class="note">Track spacing, type scale, and panel weight.</div>
+          </div>
+          <div class="metric">
+            <div class="label">Delivery state</div>
+            <div class="value">Baseline</div>
+            <div class="note">Reference only; implementation must match unless documented.</div>
+          </div>
+          <div class="metric">
+            <div class="label">Risk</div>
+            <div class="value" style="color:var(--warn);">Deviation</div>
+            <div class="note">Treat visual drift as a spec change requiring traceability.</div>
+          </div>
+        </section>
+
+        <section class="feed" aria-label="Output blocks">
+          <article class="block">
+            <div class="block-head">
+              <div class="block-title">1. Initial readout <span class="kbd">/summary</span></div>
+              <div class="kbd">00:14</div>
+            </div>
+            <div class="block-body">
+              <p>
+                The reference frame presents a left roster, a central activity column, and a right inspection drawer.
+                Each pane is panelized with rounded corners, muted borders, and a layered dark surface treatment.
+              </p>
+              <p>
+                The top bar contains the session identity and status chips, reinforcing the console metaphor without introducing interaction logic.
+              </p>
+            </div>
+          </article>
+
+          <article class="block">
+            <div class="block-head">
+              <div class="block-title">2. Representative output <span class="kbd">/notes</span></div>
+              <div class="kbd">00:21</div>
+            </div>
+            <div class="block-body">
+              <div class="codebox">layout:
+  columns: [280px, fluid, 340px]
+  header: 64px
+  surfaces: dark, layered, soft-border
+  behavior: static
+  accessibility: semantic landmarks, readable contrast</div>
+            </div>
+          </article>
+
+          <article class="block">
+            <div class="block-head">
+              <div class="block-title">3. Visual comparison notes <span class="kbd">/diff</span></div>
+              <div class="kbd">00:29</div>
+            </div>
+            <div class="block-body">
+              <p>
+                Use this baseline to compare spacing rhythm, panel height, density of controls, and the balance between text and chrome.
+              </p>
+              <p>
+                The mockup includes visible roster chips, a multi-card center feed, and a compact drawer summary block to emulate the original review composition.
+              </p>
+            </div>
+          </article>
+
+          <article class="block">
+            <div class="block-head">
+              <div class="block-title">4. Approval gate <span class="kbd">/gate</span></div>
+              <div class="kbd">pending</div>
+            </div>
+            <div class="block-body">
+              <p>
+                Confirm the static baseline matches the design review mockup before any implementation-specific variance is introduced.
+              </p>
+            </div>
+          </article>
+        </section>
+
+        <section class="approval" aria-label="Approval gate">
+          <div>
+            <strong>Approval required before deviation</strong>
+            <span>
+              This file is a frozen reference baseline. If implementation differs, the deviation must be recorded in
+              <span style="font-family:var(--mono);">docs/design-spec.md</span>.
+            </span>
+          </div>
+          <button class="approve-btn" type="button" aria-label="Reference acknowledged" disabled>Reference locked</button>
+        </section>
+      </main>
+
+      <aside class="drawer" aria-label="Right drawer">
+        <section class="drawer-card">
+          <h3>Inspector drawer</h3>
+          <ul class="drawer-list">
+            <li><strong>Surface stack:</strong> consistent panel layering with soft borders and elevated shadows.</li>
+            <li><strong>Typography:</strong> compact headings, readable body copy, and mono labels for metadata.</li>
+            <li><strong>Density:</strong> review-console feel with limited whitespace and high information throughput.</li>
+          </ul>
+        </section>
+
+        <section class="drawer-card">
+          <h3>Implementation cues</h3>
+          <div class="drawer-meta">
+            <div class="drawer-stat"><span class="name">Primary palette</span><span class="num">#0b0f14</span></div>
+            <div class="drawer-stat"><span class="name">Accent</span><span class="num">Blue / mint</span></div>
+            <div class="drawer-stat"><span class="name">Border style</span><span class="num">1px soft</span></div>
+            <div class="drawer-stat"><span class="name">Radius</span><span class="num">12–16px</span></div>
+          </div>
+        </section>
+
+        <section class="drawer-card">
+          <h3>Session note</h3>
+          <ul class="drawer-list">
+            <li><strong>Readonly artifact:</strong> no interactive dependency or runtime state should be added here.</li>
+            <li><strong>Change policy:</strong> document any divergence in the design spec before implementation proceeds.</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+  </div>
+</body>
+</html>

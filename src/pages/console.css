@@ -1,0 +1,73 @@
+@import './design-tokens.css';
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-ui);
+  background: var(--color-bg);
+  color: var(--color-fg);
+}
+
+.console-shell {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 280px minmax(0, 1fr) 320px;
+  grid-template-areas: 'left-rail center-stage right-drawer';
+  background: var(--color-bg);
+}
+
+.left-rail {
+  grid-area: left-rail;
+}
+
+.center-stage {
+  grid-area: center-stage;
+  min-width: 0;
+}
+
+.right-drawer {
+  grid-area: right-drawer;
+}
+
+.console-output,
+.console-output pre,
+.console-output code,
+.console-output kbd,
+.console-output samp {
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 1279.98px) and (min-width: 960px) {
+  .console-shell {
+    grid-template-columns: 80px minmax(0, 1fr) 320px;
+  }
+}
+
+@media (max-width: 959.98px) {
+  .console-shell {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'center-stage'
+      'left-rail'
+      'right-drawer';
+  }
+
+  .left-rail,
+  .right-drawer {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1280px) {
+  .console-shell {
+    grid-template-columns: 280px minmax(0, 1fr) 360px;
+  }
+}

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agent Roster</title>
+  <link rel="stylesheet" href="../../styles/design-tokens.css" />
+  <link rel="stylesheet" href="./left-rail.css" />
+  <style>
+    :root {
+      color-scheme: light;
+    }
+
+    body {
+      margin: 0;
+      background: transparent;
+      font-family: var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+      color: var(--color-text-primary, #111827);
+    }
+
+    .agent-roster {
+      width: 240px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--color-surface, #ffffff);
+      border-right: 1px solid var(--color-border, #e5e7eb);
+      overflow: hidden;
+    }
+
+    .agent-roster__header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem;
+      border-bottom: 1px solid var(--color-border, #e5e7eb);
+    }
+
+    .agent-roster__title {
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      color: var(--color-text-secondary, #6b7280);
+      margin: 0;
+    }
+
+    .agent-roster__list {
+      list-style: none;
+      margin: 0;
+      padding: 0.5rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .agent-roster__item {
+      margin: 0;
+    }
+
+    .agent-roster__button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 40px 1fr auto;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 1rem;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      cursor: pointer;
+      border-radius: 0;
+    }
+
+    .agent-roster__button:hover,
+    .agent-roster__button:focus-visible {
+      background: var(--color-surface-raised, #f9fafb);
+      outline: none;
+    }
+
+    .agent-roster__avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-surface-muted, #f3f4f6);
+      color: var(--color-text-primary, #111827);
+      font-weight: 700;
+      font-size: 0.875rem;
+      overflow: hidden;
+      flex: none;
+    }
+
+    .agent-roster__avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .agent-roster__meta {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.125rem;
+    }
+
+    .agent-roster__name {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .agent-roster__role {
+      font-size: 0.8125rem;
+      line-height: 1.2;
+      color: var(--color-text-secondary, #6b7280);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .agent-roster__status {
+      justify-self: end;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .agent-roster--compact {
+      width: 56px;
+    }
+
+    .agent-roster--compact .agent-roster__header {
+      justify-content: center;
+      padding: 1rem 0.5rem;
+    }
+
+    .agent-roster--compact .agent-roster__title,
+    .agent-roster--compact .agent-roster__meta,
+    .agent-roster--compact .agent-roster__status {
+      display: none;
+    }
+
+    .agent-roster--compact .agent-roster__button {
+      grid-template-columns: 40px;
+      justify-content: center;
+      padding: 0.625rem 0.5rem;
+    }
+
+    .agent-roster--compact .agent-roster__avatar {
+      margin: 0 auto;
+    }
+
+    @media (min-width: 960px) and (max-width: 1279px) {
+      .agent-roster {
+        width: 56px;
+      }
+
+      .agent-roster__header {
+        justify-content: center;
+        padding: 1rem 0.5rem;
+      }
+
+      .agent-roster__title,
+      .agent-roster__meta,
+      .agent-roster__status {
+        display: none;
+      }
+
+      .agent-roster__button {
+        grid-template-columns: 40px;
+        justify-content: center;
+        padding: 0.625rem 0.5rem;
+      }
+
+      .agent-roster__avatar {
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 959px) {
+      .agent-roster {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <aside class="agent-roster" aria-label="Agent roster">
+    <div class="agent-roster__header">
+      <p class="agent-roster__title">Agents</p>
+    </div>
+    <ul class="agent-roster__list" id="agentRosterList" aria-live="polite"></ul>
+  </aside>
+
+  <template id="statusBadgeTemplate">
+    <span class="status-badge" data-status-badge>
+      <span class="status-badge__dot" aria-hidden="true"></span>
+      <span class="status-badge__label" data-status-label></span>
+    </span>
+  </template>
+
+  <script>
+    (function () {
+      const list = document.getElementById('agentRosterList');
+      const roster = document.querySelector('.agent-roster');
+      const badgeTemplate = document.getElementById('statusBadgeTemplate');
+      const agents = Array.isArray(window.AGENTS) ? window.AGENTS : [];
+
+      function normalizeStatus(status) {
+        if (!status) return 'offline';
+        return String(status).toLowerCase();
+      }
+
+      function statusLabel(status) {
+        const normalized = normalizeStatus(status);
+        return normalized.charAt(0).toUpperCase() + normalized.slice(1);
+      }
+
+      function avatarContent(agent) {
+        if (agent.avatarUrl) {
+          const img = document.createElement('img');
+          img.src = agent.avatarUrl;
+          img.alt = '';
+          return img;
+        }
+
+        const fallback = document.createElement('span');
+        const label = agent.shortName || agent.name || '';
+        fallback.textContent = label ? label.trim().charAt(0).toUpperCase() : '•';
+        fallback.setAttribute('aria-hidden', 'true');
+        return fallback;
+      }
+
+      function createStatusBadge(status) {
+        const node = badgeTemplate.content.firstElementChild.cloneNode(true);
+        const normalized = normalizeStatus(status);
+        node.setAttribute('data-state', normalized);
+        const label = node.querySelector('[data-status-label]');
+        if (label) label.textContent = statusLabel(normalized);
+        return node;
+      }
+
+      function renderAgents() {
+        if (!list) return;
+        list.textContent = '';
+
+        agents.forEach((agent) => {
+          const item = document.createElement('li');
+          item.className = 'agent-roster__item';
+
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'agent-roster__button';
+          button.setAttribute('aria-label', `${agent.name || 'Agent'} ${agent.role || ''} ${statusLabel(agent.status || 'offline')}`.trim());
+
+          const avatar = document.createElement('span');
+          avatar.className = 'agent-roster__avatar';
+          const avatarNode = avatarContent(agent);
+          avatar.appendChild(avatarNode);
+
+          const meta = document.createElement('span');
+          meta.className = 'agent-roster__meta';
+
+          const name = document.createElement('span');
+          name.className = 'agent-roster__name';
+          name.textContent = agent.name || 'Unnamed agent';
+
+          const role = document.createElement('span');
+          role.className = 'agent-roster__role';
+          role.textContent = agent.role || '';
+
+          meta.appendChild(name);
+          if (agent.role) meta.appendChild(role);
+
+          const status = document.createElement('span');
+          status.className = 'agent-roster__status';
+          status.appendChild(createStatusBadge(agent.status));
+
+          button.appendChild(avatar);
+          button.appendChild(meta);
+          button.appendChild(status);
+          item.appendChild(button);
+          list.appendChild(item);
+        });
+      }
+
+      function applyCompactClass() {
+        if (!roster) return;
+        const compact = window.matchMedia('(min-width: 960px) and (max-width: 1279px)').matches;
+        roster.classList.toggle('agent-roster--compact', compact);
+      }
+
+      renderAgents();
+      applyCompactClass();
+
+      const mq = window.matchMedia('(min-width: 960px) and (max-width: 1279px)');
+      if (mq.addEventListener) {
+        mq.addEventListener('change', applyCompactClass);
+      } else if (mq.addListener) {
+        mq.addListener(applyCompactClass);
+      }
+
+      window.addEventListener('resize', applyCompactClass, { passive: true });
+    })();
+  </script>
+</body>
+</html>

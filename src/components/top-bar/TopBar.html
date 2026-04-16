@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Top Bar</title>
+    <link rel="stylesheet" href="../../styles/design-tokens.css" />
+    <link rel="stylesheet" href="./top-bar.css" />
+    <script type="module">
+      import { holdToggle } from './hold-toggle.js';
+      import { approvalGate } from './approval-gate.js';
+
+      const SESSION_ID = 'Session 87';
+
+      const sessionIdEl = document.getElementById('session-id');
+      const holdButton = document.getElementById('hold-button');
+      const approvalBadge = document.getElementById('approval-badge');
+
+      const renderApprovalCount = () => {
+        const pendingCount = typeof approvalGate?.getPendingCount === 'function'
+          ? approvalGate.getPendingCount()
+          : (typeof approvalGate?.pendingCount === 'number' ? approvalGate.pendingCount : 0);
+
+        approvalBadge.textContent = String(pendingCount);
+        approvalBadge.hidden = pendingCount <= 0;
+      };
+
+      const syncHoldState = (isHolding) => {
+        holdButton.classList.toggle('is-holding', Boolean(isHolding));
+        holdButton.setAttribute('aria-pressed', String(Boolean(isHolding)));
+        holdButton.textContent = isHolding ? 'HOLD ACTIVE' : 'HOLD';
+      };
+
+      sessionIdEl.textContent = SESSION_ID;
+      syncHoldState(Boolean(holdToggle?.isHolding));
+      renderApprovalCount();
+
+      holdButton.addEventListener('click', () => {
+        const isHolding = holdButton.classList.contains('is-holding');
+        if (isHolding) {
+          holdToggle.disengage();
+          syncHoldState(false);
+        } else {
+          holdToggle.engage();
+          syncHoldState(true);
+        }
+      });
+
+      if (typeof approvalGate?.onChange === 'function') {
+        approvalGate.onChange(renderApprovalCount);
+      }
+
+      if (typeof holdToggle?.onChange === 'function') {
+        holdToggle.onChange(syncHoldState);
+      }
+    </script>
+  </head>
+  <body>
+    <header class="top-bar" role="banner" aria-label="Global top bar">
+      <div class="top-bar__session" aria-label="Session identifier">
+        <span class="top-bar__label">Session</span>
+        <span id="session-id" class="top-bar__session-id"></span>
+      </div>
+
+      <div class="top-bar__actions">
+        <button
+          id="hold-button"
+          class="top-bar__hold-button"
+          type="button"
+          aria-pressed="false"
+          aria-label="Toggle HOLD state"
+        >
+          HOLD
+        </button>
+
+        <div class="top-bar__approval" aria-label="Pending approvals">
+          <span class="top-bar__approval-label">Approvals</span>
+          <span id="approval-badge" class="top-bar__approval-badge" hidden>0</span>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>
