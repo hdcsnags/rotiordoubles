@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Context Panel</title>
+    <link rel="stylesheet" href="../../styles/design-tokens.css" />
+    <link rel="stylesheet" href="./right-drawer.css" />
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--color-surface, #111318);
+        color: var(--color-text-primary, #e8eaf0);
+        font-family: var(--font-family-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+      }
+
+      .drawer-shell {
+        position: relative;
+        width: 320px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        border-left: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+        background: var(--color-surface-elevated, #171a21);
+        box-sizing: border-box;
+        transition: transform 180ms ease;
+        transform: translateX(0);
+      }
+
+      .drawer-shell.is-closed {
+        transform: translateX(calc(100% - 40px));
+      }
+
+      .drawer-toggle {
+        position: absolute;
+        left: -40px;
+        top: 16px;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        background: var(--color-surface-elevated, #171a21);
+        color: inherit;
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        box-shadow: -6px 0 18px rgba(0, 0, 0, 0.18);
+      }
+
+      .drawer-header {
+        padding: 16px 16px 12px;
+        border-bottom: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+      }
+
+      .drawer-title {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.4;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+      }
+
+      .drawer-subtitle {
+        margin: 4px 0 0;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--color-text-secondary, rgba(232, 234, 240, 0.72));
+      }
+
+      .drawer-content {
+        padding: 12px 16px 16px;
+        overflow: auto;
+        flex: 1;
+      }
+
+      .section {
+        margin: 0 0 16px;
+        padding: 12px;
+        border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+        border-radius: 12px;
+        background: var(--color-surface, #111318);
+      }
+
+      .section h2 {
+        margin: 0 0 10px;
+        font-size: 12px;
+        line-height: 1.4;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--color-text-secondary, rgba(232, 234, 240, 0.72));
+      }
+
+      .meta-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .meta-item {
+        display: grid;
+        gap: 2px;
+      }
+
+      .meta-label {
+        font-size: 11px;
+        color: var(--color-text-secondary, rgba(232, 234, 240, 0.72));
+      }
+
+      .meta-value {
+        font-size: 13px;
+        word-break: break-word;
+      }
+
+      .chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        background: var(--color-surface-raised, rgba(255, 255, 255, 0.06));
+        border: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+      }
+
+      .session-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .session-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      .session-row span:first-child {
+        color: var(--color-text-secondary, rgba(232, 234, 240, 0.72));
+      }
+
+      .drawer-footer {
+        padding: 12px 16px 16px;
+        border-top: 1px solid var(--color-border-subtle, rgba(255, 255, 255, 0.12));
+        font-size: 11px;
+        color: var(--color-text-secondary, rgba(232, 234, 240, 0.72));
+      }
+    </style>
+  </head>
+  <body>
+    <aside id="drawer" class="drawer-shell" aria-label="Context inspector">
+      <button id="drawerToggle" class="drawer-toggle" type="button" aria-expanded="true" aria-controls="drawerBody" aria-label="Toggle context drawer">
+        ☰
+      </button>
+
+      <header class="drawer-header">
+        <h1 class="drawer-title">Context Inspector</h1>
+        <p class="drawer-subtitle">Artifact metadata, agent context, and session details</p>
+      </header>
+
+      <div id="drawerBody" class="drawer-content">
+        <section class="section" aria-labelledby="artifact-heading">
+          <h2 id="artifact-heading">Artifact Metadata</h2>
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">Artifact ID</div>
+              <div class="meta-value" id="artifactId">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Type</div>
+              <div class="meta-value" id="artifactType">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Updated</div>
+              <div class="meta-value" id="artifactUpdated">—</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="agent-heading">
+          <h2 id="agent-heading">Agent Context</h2>
+          <div class="meta-grid">
+            <div class="meta-item">
+              <div class="meta-label">Agent</div>
+              <div class="meta-value" id="agentName">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Role</div>
+              <div class="meta-value" id="agentRole">—</div>
+            </div>
+            <div class="meta-item">
+              <div class="meta-label">Capabilities</div>
+              <div class="chip-list" id="agentCapabilities"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="session-heading">
+          <h2 id="session-heading">Session Details</h2>
+          <div class="session-list">
+            <div class="session-row"><span>Session</span><span id="sessionId">—</span></div>
+            <div class="session-row"><span>Phase</span><span id="sessionPhase">—</span></div>
+            <div class="session-row"><span>State</span><span id="sessionState">—</span></div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="drawer-footer">State persists via drawerOpen in state.js</footer>
+    </aside>
+
+    <script type="module">
+      import { state } from '../../lib/state.js';
+
+      const drawer = document.getElementById('drawer');
+      const toggleButton = document.getElementById('drawerToggle');
+
+      const sampleData = {
+        artifactId: 'artifact-87',
+        artifactType: 'session-context',
+        artifactUpdated: '—',
+        agentName: 'Maestro',
+        agentRole: 'Orchestrator',
+        agentCapabilities: ['summarize', 'draft', 'route', 'inspect'],
+        sessionId: 'Session 87',
+        sessionPhase: 'Build Task',
+        sessionState: 'Active'
+      };
+
+      function renderData() {
+        document.getElementById('artifactId').textContent = sampleData.artifactId;
+        document.getElementById('artifactType').textContent = sampleData.artifactType;
+        document.getElementById('artifactUpdated').textContent = sampleData.artifactUpdated;
+        document.getElementById('agentName').textContent = sampleData.agentName;
+        document.getElementById('agentRole').textContent = sampleData.agentRole;
+        document.getElementById('sessionId').textContent = sampleData.sessionId;
+        document.getElementById('sessionPhase').textContent = sampleData.sessionPhase;
+        document.getElementById('sessionState').textContent = sampleData.sessionState;
+
+        const list = document.getElementById('agentCapabilities');
+        list.innerHTML = '';
+        for (const capability of sampleData.agentCapabilities) {
+          const chip = document.createElement('span');
+          chip.className = 'chip';
+          chip.textContent = capability;
+          list.appendChild(chip);
+        }
+      }
+
+      function applyDrawerState(isOpen) {
+        drawer.classList.toggle('is-closed', !isOpen);
+        toggleButton.setAttribute('aria-expanded', String(!!isOpen));
+        toggleButton.setAttribute('aria-label', isOpen ? 'Collapse context drawer' : 'Expand context drawer');
+        state.set('drawerOpen', !!isOpen);
+      }
+
+      function getDrawerState() {
+        const saved = state.get('drawerOpen');
+        return saved === undefined || saved === null ? true : Boolean(saved);
+      }
+
+      export function toggleDrawer() {
+        const isOpen = !drawer.classList.contains('is-closed');
+        applyDrawerState(!isOpen);
+      }
+
+      toggleButton.addEventListener('click', toggleDrawer);
+      renderData();
+      applyDrawerState(getDrawerState());
+      window.toggleDrawer = toggleDrawer;
+    </script>
+  </body>
+</html>
